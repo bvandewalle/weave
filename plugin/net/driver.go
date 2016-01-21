@@ -100,7 +100,7 @@ func (driver *driver) CreateEndpoint(create *api.CreateEndpointRequest) (*api.Cr
 		return nil, driver.error("CreateEndpoint", "Not supported: creating an interface from within CreateEndpoint")
 	}
 
-	// create veths. note we assume endpoint IDs are unique in the first 5 chars
+	// create veths. note we assume endpoint IDs are unique in the first 8 chars
 	name, peerName := vethPair(create.EndpointID)
 	if _, err := weavenet.CreateAndAttachVeth(name, peerName, weavenet.WeaveBridgeName, 0, false, nil); err != nil {
 		return nil, driver.error("JoinEndpoint", "%s", err)
@@ -211,7 +211,7 @@ func (driver *driver) DiscoverDelete(disco *api.DiscoveryNotification) error {
 }
 
 func vethPair(id string) (string, string) {
-	return "vethwl" + id[:5], "vethwg" + id[:5]
+	return "vethwl" + id[:8], "vethwg" + id[:8]
 }
 
 // logging
